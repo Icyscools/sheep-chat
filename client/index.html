@@ -98,6 +98,7 @@
     })
 
     createBtn.addEventListener("click", (e) => {
+      document.getElementById('messages').innerHTML = "";
       e.preventDefault()
       socket.emit("create room", (room) => {
         createNewMessage(`You created room ${room}`)
@@ -105,6 +106,7 @@
     })
 
     joinBtn.addEventListener("click", (e) => {
+      document.getElementById('messages').innerHTML = "";
       e.preventDefault()
       socket.emit("join random", (room) => {
         createNewMessage(`You created room ${room}`)
