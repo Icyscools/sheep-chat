@@ -22,7 +22,7 @@ io.on("connection", (socket) => {
 
   socket.on("create room", () => {
     leaveAllRoom()
-    const roomId = "abc" + Math.floor(1 + Math.random() * 2)
+    const roomId = "Room0" + Math.floor(1 + Math.random() * 2)
     if (!avaliableRooms.includes(roomId)) {
       avaliableRooms = [...avaliableRooms, roomId]
     }
@@ -37,19 +37,19 @@ io.on("connection", (socket) => {
       avaliableRooms = avaliableRooms.filter((room) => room !== roomId)
       socket.join(roomId)
     } else {
-      socket.emit("send message", "No avaliable rooms here")
+      socket.emit("message send", "No avaliable rooms here")
     }
   })
 
   socket.on("chat message", (msg) => {
     console.log(socket.rooms)
     socket.rooms.forEach((room) => {
-      io.to(room).emit("send message", `${socket.id}: ${msg}`)
+      io.to(room).emit("message send", `${socket.id}: ${msg}`)
     })
   })
 
-  socket.on("send message", (msg) => {
-    socket.emit("send message", msg)
+  socket.on("message send", (msg) => {
+    socket.emit("message send", msg)
   })
 
   socket.on("disconnecting", () => {
@@ -70,7 +70,7 @@ io.of("/").adapter.on("create-room", (room) => {
 
 io.of("/").adapter.on("join-room", (room, id) => {
   console.log(`socket ${id} has joined room ${room}`)
-  io.to(room).emit("send message", `${id} has joined room ${room}`)
+  io.to(room).emit("message send", `${id} has joined room ${room}`)
 })
 
 io.of("/").adapter.on("leave-room", (room, id) => {
