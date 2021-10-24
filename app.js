@@ -4,6 +4,7 @@ const http = require("http")
 const server = http.createServer(app)
 const { Server } = require("socket.io")
 const io = new Server(server)
+const { v4: uuidv4 } = require('uuid');
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/client/index.html")
@@ -22,7 +23,7 @@ io.on("connection", (socket) => {
 
   socket.on("create room", () => {
     leaveAllRoom()
-    const roomId = "abc" + Math.floor(1 + Math.random() * 2)
+    const roomId = uuidv4()
     if (!avaliableRooms.includes(roomId)) {
       avaliableRooms = [...avaliableRooms, roomId]
     }
